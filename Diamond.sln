@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32901.82
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Diamond", "Diamond\Diamond.vcxproj", "{50F8A89A-018C-4E51-8C04-77487B7DF116}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{50F8A89A-018C-4E51-8C04-77487B7DF116}.Debug|x64.ActiveCfg = Debug|x64
+		{50F8A89A-018C-4E51-8C04-77487B7DF116}.Debug|x64.Build.0 = Debug|x64
+		{50F8A89A-018C-4E51-8C04-77487B7DF116}.Debug|x86.ActiveCfg = Debug|Win32
+		{50F8A89A-018C-4E51-8C04-77487B7DF116}.Debug|x86.Build.0 = Debug|Win32
+		{50F8A89A-018C-4E51-8C04-77487B7DF116}.Release|x64.ActiveCfg = Release|x64
+		{50F8A89A-018C-4E51-8C04-77487B7DF116}.Release|x64.Build.0 = Release|x64
+		{50F8A89A-018C-4E51-8C04-77487B7DF116}.Release|x86.ActiveCfg = Release|Win32
+		{50F8A89A-018C-4E51-8C04-77487B7DF116}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0DAC9083-57DE-47BA-BD97-4D86346C2C0F}
+	EndGlobalSection
+EndGlobal
