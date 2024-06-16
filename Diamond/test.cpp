@@ -124,3 +124,41 @@ INSTANTIATE_TEST_CASE_P(
 		std::make_tuple('C', "C   C\n B B\n  A")
 	)
 );
+
+std::stringstream create_diamond(char diamondCenterLetter)
+{
+	std::stringstream oss;
+	create_diamond_top(oss, 'A', diamondCenterLetter);
+
+	if (diamondCenterLetter > 'A')
+	{
+		oss << '\n';
+		create_diamond_bot(oss, diamondCenterLetter - 1, diamondCenterLetter);
+	}
+
+	return oss;
+}
+
+class CreateDiamondTestFixture
+	: public ::testing::TestWithParam<std::tuple<char, std::string>> {};
+
+TEST_P(CreateDiamondTestFixture, CreateDiamondAndTestBothFaces)
+{
+	auto& param = GetParam();
+
+	char diamondCenterLetter = std::get<0>(param);
+	std::string expected = std::get<1>(param);
+
+	std::stringstream oss = create_diamond(diamondCenterLetter);
+	EXPECT_EQ(expected, oss.str());
+}
+
+INSTANTIATE_TEST_CASE_P(
+	DiamondTestSuite,
+	CreateDiamondTestFixture,
+	::testing::Values(
+		std::make_tuple('A', "A"),
+		std::make_tuple('B', " A\nB B\n A"),
+		std::make_tuple('C', "  A\n B B\nC   C\n B B\n  A")
+	)
+);
