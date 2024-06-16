@@ -2,105 +2,41 @@
 
 #include <string>
 #include <ostream>
+#include <gtest/gtest.h>
 
-/*
-* "chaine"
-* R"(
-* ")
-*/
-
-/*
-	oss << std::endl;
-	oss << ' ' << 'A' << std::endl;
-	oss << "B B" << std::endl;
-	oss << " A";
-*/
-
-int countNbOfLines(std::string diamond) {
-	return diamond.length();
+void add_diamond_line(std::stringstream& oss,
+	char letter, int spacesBefore, int spacesBetween)
+{
+	oss << std::string(spacesBefore, ' ') << letter;
+	if (spacesBetween > 0)
+		oss << std::string(spacesBetween, ' ') << letter;
 }
 
-std::string diamond(char letter) {
+class AddDiamondLineTestFixture
+	: public ::testing::TestWithParam<std::tuple<char, int, int, std::string>> {};
+
+TEST_P(AddDiamondLineTestFixture, AddDiamondLineAndTestLineResult)
+{
 	std::stringstream oss;
+	auto& param = GetParam();
 
-	if (letter == 'B') {
-		oss << R"(
- A
-B B
- A)";
-	}
-	else {
-		oss << R"(
-  A
- B B
-C   C
- B B
-  A)";
-	}
+	char letter = std::get<0>(param);
+	int spacesBefore = std::get<1>(param);
+	int spacesBetween = std::get<2>(param);
+	std::string expected = std::get<3>(param);
 
-	return oss.str();
+	add_diamond_line(oss, letter, spacesBefore, spacesBetween);
+	EXPECT_EQ(expected, oss.str());
 }
 
-void addSpaces(std::stringstream &os, int count) {
-	
-	for (; count > 0; count--) {
-		os << '_';
-	}
-}
-
-std::string diamondDelta(char letter) {
-	std::stringstream oss;
-	int first=(int)'B';
-	int last = (int)letter;
-	oss << std::endl;
-	addSpaces(oss, last - first + 1);
-	oss << 'A' << std::endl;
-	while(first!=last){
-		addSpaces(oss, last - first);
-		oss << (char)first;
-		addSpaces(oss, 2*(first-(int)'A'-2)+1);
-		oss << std::endl;
-		first++;
-	}
-	while (first != (int)'A'){
-		addSpaces(oss, last - first);
-		oss << (char)first;
-		addSpaces(oss, 2 * (first - (int)'A'-2) + 1);
-		oss << std::endl;
-		first--;
-	}
-	addSpaces(oss, last - first);
-	oss << 'A';
-	return oss.str();
-}
-
-TEST(DiamondTestSuite, TestDiamondB) {
-  EXPECT_EQ(diamond('B'), R"(
- A
-B B
- A)");
-}
-
-TEST(DiamondTestSuite, TestDiamondC) {
-	EXPECT_EQ(diamond('C'), R"(
-  A
- B B
-C   C
- B B
-  A)");
-}
-
-TEST(DiamondTestSuite, TestAddOneSpace) {
-	std::stringstream oss;
-	addSpaces(oss, 1);
-	EXPECT_EQ("_", oss.str() );
-	}
-
-TEST(DiamondTestSuite, TestDiamondDeltaC) {
-	EXPECT_EQ(diamondDelta('C'), R"(
-__A
-_B_
-C___
-_B_
-__A)");
-}
+INSTANTIATE_TEST_CASE_P(
+	DiamondTestSuite,
+	AddDiamondLineTestFixture,
+	::testing::Values(
+		std::make_tuple('A', 1, 0, " A"),
+		std::make_tuple('B', 0, 1, "B B"),
+		std::make_tuple('A', 2, 0, "  A"),
+		std::make_tuple('B', 1, 1, " B B"),
+		std::make_tuple('C', 0, 3, "C   C")
+	)
+);
