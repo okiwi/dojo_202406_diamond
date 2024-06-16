@@ -40,3 +40,45 @@ INSTANTIATE_TEST_CASE_P(
 		std::make_tuple('C', 0, 3, "C   C")
 	)
 );
+
+void create_diamond_top(std::stringstream& oss, char currentLetter, char diamondCenterLetter)
+{
+	if (currentLetter > diamondCenterLetter) return;
+
+	static constexpr char BASE_A = 'A';
+	int n = diamondCenterLetter - BASE_A;
+	int currentPos = currentLetter - BASE_A;
+
+	add_diamond_line(oss, currentLetter, n - currentPos, 2 * currentPos - 1);
+	
+	if (++currentLetter <= diamondCenterLetter)
+	{
+		oss << '\n';
+		create_diamond_top(oss, currentLetter, diamondCenterLetter);
+	}
+}
+
+class CreateDiamondTestFixture
+	: public ::testing::TestWithParam<std::tuple<char, std::string>> {};
+
+TEST_P(CreateDiamondTestFixture, CreateDiamondAndTestTopFace)
+{
+	std::stringstream oss;
+	auto& param = GetParam();
+
+	char diamondCenterLetter = std::get<0>(param);
+	std::string expected = std::get<1>(param);
+
+	create_diamond_top(oss, 'A', diamondCenterLetter);
+	EXPECT_EQ(expected, oss.str());
+}
+
+INSTANTIATE_TEST_CASE_P(
+	DiamondTestSuite,
+	CreateDiamondTestFixture,
+	::testing::Values(
+		std::make_tuple('A', "A"),
+		std::make_tuple('B', " A\nB B"),
+		std::make_tuple('C', "  A\n B B\nC   C")
+	)
+);
